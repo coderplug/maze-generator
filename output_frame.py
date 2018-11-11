@@ -1,6 +1,7 @@
 import tkinter as tk
 import random as rnd
 import PIL.Image as image
+import PIL.ImageTk as imageTk
 import PIL.ImageFile as imageF
 import PIL.ImageDraw as imageD
 import time
@@ -18,15 +19,23 @@ class OutputFrame(tk.Frame):
         #self.createWidgets()
     
     def generatePicture(self, mazeSize, bitmap, directory, filename):
+        timeAm = time.clock()
         im = image.new("1", mazeSize)
+        pixels = im.load()
         
+        timeA = time.clock()
         for i in range (mazeSize[0]):
             for j in range (mazeSize[1]):
                 pixels[i, j] = bitmap[i][j]
+        timeB = time.clock()
 
         im.save(directory + "\\" + filename + ".png", "PNG")
         self.img = im
         self.directory = directory + "\\" + filename + ".png"
+        timeC = time.clock()
+
+        print("time: ", timeA-timeAm, " AB - ", timeB-timeA, " BC - ", timeC-timeB)
+        print("total: ", timeC-timeA)
 
         #im.show()
         self.createWidgets()
@@ -49,10 +58,14 @@ class OutputFrame(tk.Frame):
                 (self.buttons[i][j])["bg"] = color
     
     def createWidgets(self):
-        self.img = tk.PhotoImage(file=self.directory)
+        img = image.open(self.directory)
+        size = (self.img.size[0]*2, self.img.size[1]*2)
+        img = img.resize(size)
+        self.img = imageTk.PhotoImage(img)
         self.createImageField(0, 0)
         
     def createImageField(self, row, column):
+        #self.img = self.img.thumbnail(size)
         self.image = tk.Label(self, image=self.img)
         self.pack()
         self.image.grid(column = column, row = row)

@@ -2,6 +2,8 @@ import tkinter as tk
 import input_frame as inf
 import output_frame as outf
 
+#TODO: update frame to not be larger than image
+
 def main():
     root = tk.Tk()
 

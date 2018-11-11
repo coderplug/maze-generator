@@ -1,6 +1,7 @@
 import random
 
 # depth-first_search_with_wall_cells
+#TODO: fix recursion limit
 
 class Cell(object):
     def __init__(self):
@@ -62,9 +63,9 @@ def depth_first_search(stack, grid, pos):
         if next_cell.visited == True:
             continue
         else:
-            print("pos ", pos, " move ", move, ", next_pos ", next_pos)
-            print("i ", i)
-            print("neighbors", cell.neighbors)
+            #print("pos ", pos, " move ", move, ", next_pos ", next_pos)
+            #print("i ", i)
+            #print("neighbors", cell.neighbors)
             wall = find_wall(grid, pos, i)
             remove_wall(wall, cell, next_cell, i)
             stack.append(next_cell)
