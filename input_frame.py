@@ -7,8 +7,8 @@ import random as rnd
 import maze_generator_depth_first_search as maze_generator
 
 class InputFrame(tk.Frame):
-    mazeSizeX = None
-    mazeSizeY = None
+    mazeSizeRow = None
+    mazeSizeCol = None
     minMazeSize = (4, 4)
     multiplePaths = False
     startPosX = None
@@ -27,8 +27,8 @@ class InputFrame(tk.Frame):
 
     def createWidgets(self):
         self.createLabel("Maze size", 0, 0)
-        self.mazeSizeX = self.createTextField(0, 1, tk.IntVar(self))
-        self.mazeSizeY = self.createTextField(0, 2, tk.IntVar(self))
+        self.mazeSizeRow = self.createTextField(0, 1, tk.IntVar(self))
+        self.mazeSizeCol = self.createTextField(0, 2, tk.IntVar(self))
 
         self.createLabel("Multiple Paths?", 1, 0)
         self.multiplePaths = self.createCheckbox(1, 1, True, False, tk.BooleanVar(self))
@@ -92,7 +92,7 @@ class InputFrame(tk.Frame):
     #    self.image.grid(column = column, row = row, rowspan = rowspan)
 
     def generate(self):
-        mazeSize = (self.mazeSizeX.get(), self.mazeSizeY.get())
+        mazeSize = (self.mazeSizeRow.get(), self.mazeSizeCol.get())
         print ("Maze size - ", mazeSize)
 
         multiplePaths = self.multiplePaths.get()
@@ -127,10 +127,10 @@ class InputFrame(tk.Frame):
         self.pic.generatePicture(mazeSize, bitmap, directory, filename)
 
 def fix_size(size):
-    (size_0, size_1) = size
-    if size_0 % 2 != 0:
-        size_0 = size_0 + 1
-    if size_1 % 2 != 0:
-        size_1 = size_1 + 1
-    size = (size_0 + 1, size_1 + 1)
+    (size_row, size_col) = size
+    if size_row % 2 != 0:
+        size_row = size_row + 1
+    if size_col % 2 != 0:
+        size_col = size_col + 1
+    size = (size_row + 1, size_col + 1)
     return size
