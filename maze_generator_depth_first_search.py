@@ -21,7 +21,7 @@ class Cell(object):
             "E" : "W",
             "W" : "E"}
         self.visited = False
-        self.is_wall = True
+        self.is_cell = False
         self.walls = ["N", "S", "E", "W"]
         self.neighbors = ["N", "S", "E", "W"]
 
@@ -31,31 +31,30 @@ def generate_cells(size):
         line = []
         for j in range(size[1]):
             cell = Cell()
-            if i%2==0 and j%2==0:
-                cell.is_wall = False
+            if i%2==1 and j%2==1:
+                cell.is_cell = True
             line.append(cell)
         grid.append(line)
     remove_neighbors(grid)
     return grid
 
 def remove_neighbors(grid):
-    size = (len(grid), len(grid[0]))
-    print(size)
-    
-    last_size_0 = size[0] if size[0] % 2 != 0 else size[0] - 1
-    last_size_1 = size[1] if size[1] % 2 != 0 else size[1] - 1
-    print(last_size_0, " - ", last_size_1)
-    for i in range(0, last_size_0, 2):
-        grid[0][i].neighbors.remove("N")
-        grid[last_size_1 - 1][i].neighbors.remove("S")
-    for i in range(0, last_size_1, 2):
-        grid[i][0].neighbors.remove("W")
-        grid[i][last_size_0 - 1].neighbors.remove("E")
+    (max_x, max_y) = (len(grid) - 2, len(grid[0]) - 2)
+    (min_x, min_y) = (1, 1)
+    print(max_x, " - ", max_y)
+    for i in range(min_x, (max_x + 1), 2):
+        grid[min_y][i].neighbors.remove("N")
+        grid[max_y][i].neighbors.remove("S")
+    for i in range(min_y, (max_y + 1), 2):
+        grid[i][min_x].neighbors.remove("W")
+        grid[i][max_x].neighbors.remove("E")
 
+#TODO: Remake to iterative
 def depth_first_search(stack, grid, pos):
     cell = grid[pos[0]][pos[1]]
     cell.visited = True
     random.shuffle(cell.neighbors)
+    #while(stack != []):
     for i in cell.neighbors:
         move = cell.cell_directions[i]
         next_pos = [pos[0] + move[0], pos[1] + move[1]]
@@ -70,7 +69,7 @@ def depth_first_search(stack, grid, pos):
             remove_wall(wall, cell, next_cell, i)
             stack.append(next_cell)
             depth_first_search(stack, grid, next_pos)
-    stack.pop()
+        stack.pop()
 
 def find_wall(grid, pos, direction):
     cell = grid[pos[0]][pos[1]]
@@ -80,10 +79,10 @@ def find_wall(grid, pos, direction):
 def remove_wall(wall_cell, cell, next_cell, direction):
     cell.walls.remove(direction)
     next_cell.walls.remove(next_cell.dirMirrored[direction])
-    wall_cell.is_wall = False
+    wall_cell.is_cell = True
 
 def generate_maze(size):
-    start = [0, 0]
+    start = [1, 1]
     grid = generate_cells(size)
     print("cnt - ", len(grid))
     first_cell = grid[start[0]][start[1]]
@@ -95,7 +94,7 @@ def generate_maze(size):
     for line in grid:
         result_line = []
         for cell in line:
-            result_line.append(cell.is_wall)
+            result_line.append(cell.is_cell)
         result_grid.append(result_line)
     
     return result_grid

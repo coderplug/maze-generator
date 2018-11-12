@@ -3,10 +3,10 @@ class Validator(object):
         mazeSize = (mazeSize[0]-1, mazeSize[1]-1)
         if not(self.validateMazeSize(minMazeSize, mazeSize)):
             return "Maze size is not large enough. Minimum values are " + str((minMazeSize[0] + 1, minMazeSize[1] + 1))
-        elif not(self.validateStartPos(mazeSize, startPos)):
-            return "Start position is invalid. It should be on the border (not corners) of maze"
-        elif not(self.validateEndPos(mazeSize, startPos, endPos)):
-            return "End position is invalid. It should be on the border (not corners) of maze and does not block start position"
+        #elif not(self.validateStartPos(mazeSize, startPos)):
+        #    return "Start position is invalid. It should be on the border (not corners) of maze"
+        #elif not(self.validateEndPos(mazeSize, startPos, endPos)):
+        #    return "End position is invalid. It should be on the border (not corners) of maze and does not block start position"
         elif not(self.validateDirectory(directory)):
             return "Directory should not be empty"
         elif not(self.validateFilename(filename)):

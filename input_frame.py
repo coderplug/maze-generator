@@ -121,6 +121,16 @@ class InputFrame(tk.Frame):
             self.generateMaze(mazeSize, startPos, endPos, directory, filename)
 
     def generateMaze(self, mazeSize, startPos, endPos, directory, filename):
+        mazeSize = fix_size(mazeSize)
         bitmap = maze_generator.generate_maze(mazeSize)
         print(bitmap)
         self.pic.generatePicture(mazeSize, bitmap, directory, filename)
+
+def fix_size(size):
+    (size_0, size_1) = size
+    if size_0 % 2 != 0:
+        size_0 = size_0 + 1
+    if size_1 % 2 != 0:
+        size_1 = size_1 + 1
+    size = (size_0 + 1, size_1 + 1)
+    return size
